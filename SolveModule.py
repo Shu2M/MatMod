@@ -98,6 +98,7 @@ class Solve(wx.Panel):
         y = 1 / P * (zeta / np.pi * N - mu * zeta ** 2 * i_z + mu / zeta * i_y2)
 
         eps = abs(y_old - y)
+
         while eps >= 1e-6:
             y_old = y
             I_y1_arg = div(mul(mul(mul(mul(X, X), X), mul(G_t, G_t)), mul(G_z, G_z)),
