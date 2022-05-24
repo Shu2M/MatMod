@@ -5,7 +5,7 @@ from numpy import divide as div
 
 
 class Solve(wx.Panel):
-    def __init__(self, Gamma_r_list, Gamma_t_list, Gamma_z_list, A_list, mu, N, P, dr_s, dr_m):
+    def __init__(self, Gamma_r_list, Gamma_t_list, Gamma_z_list, A_list, mu, N, P, dr_s=0.001, dr_m=0.001):
 
         self.A = A_list
 
