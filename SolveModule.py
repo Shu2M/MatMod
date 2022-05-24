@@ -4,7 +4,7 @@ from numpy import multiply as mul
 from numpy import divide as div
 
 
-class Solve(wx.Panel):
+class GrowTask(wx.Panel):
     def __init__(self, Gamma_r_list, Gamma_t_list, Gamma_z_list, A_list, mu, N, P, dr_s=0.001, dr_m=0.001):
 
         self.A = A_list
@@ -120,14 +120,14 @@ class Solve(wx.Panel):
         self.R_m = findinverse(self.R_s, self.A[0], dr_s, dr_m)
         print()
 
-    def MaterialRadius(self):
-        return self.R_s
-
-    def SpatialRadius(self):
+    def getSpatialRadius(self):
         return self.R_m
 
-    def MaterialDissplacement(self):
+    def getMaterialRadius(self):
+        return self.R_s
+
+    def getMaterialDissplacement(self):
         return self.R_s - [x for x in np.linspace(self.A[0], self.A[-1], len(self.R_s))]
 
-    def SpatiallDissplacement(self):
+    def getSpatialDissplacement(self):
         return [x for x in np.linspace(min(self.R_s), max(self.R_s), len(self.R_m))] - self.R_m
