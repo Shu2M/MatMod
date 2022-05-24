@@ -113,7 +113,6 @@ class Solve(wx.Panel):
         i_y1 = integrate(self.A[0], self.A[-1], div(mul(mul(mul(mul(X, X), X), mul(G_t, G_t)), mul(G_z, G_z)),
                                                     mul((y + 2 * I_g), (y + 2 * I_g))), self.A[0], dr_s)[-1]
         zeta = mu / P * (i_t - i_y1)
-        b = 1
         a = y / zeta
 
         self.R_s = np.sqrt(a + 2 / zeta * I_g)
