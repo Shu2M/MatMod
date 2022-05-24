@@ -120,14 +120,14 @@ class Solve(wx.Panel):
         self.R_m = findinverse(self.R_s, self.A[0], dr_s, dr_m)
         print()
 
-    def SpatialRadius(self):
+    def MaterialRadius(self):
         return self.R_s
 
-    def MaterialRadius(self):
+    def SpatialRadius(self):
         return self.R_m
 
-    def SpatialDissplacement(self):
+    def MaterialDissplacement(self):
         return self.R_s - [x for x in np.linspace(self.A[0], self.A[-1], len(self.R_s))]
 
-    def MaterialDissplacement(self):
+    def SpatiallDissplacement(self):
         return [x for x in np.linspace(min(self.R_s), max(self.R_s), len(self.R_m))] - self.R_m
