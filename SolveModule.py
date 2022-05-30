@@ -96,7 +96,6 @@ class GrowTask():
         a = A[0] ** 2
         zeta = 1
         y = a*zeta
-        y_old = y
         lam = 10 ** -1
 
         ###
@@ -116,12 +115,11 @@ class GrowTask():
 
         eps = 1
         while eps >= 1e-6:
-            y_old = y
             I_y1_arg = div(mul(mul(mul(X, X), X), mul(mul(G, G), G)),
-                           mul(mul(y + 1 ** -3 + 2 * I_g, y + 1 ** -3 + 2 * I_g), mul(Gam_r, Gam_r)))
+                           mul(mul(y + dr_s + 2 * I_g, y + dr_s + 2 * I_g), mul(Gam_r, Gam_r)))
             I_y2_arg = div(mul(mul(mul(X, X), X), mul(mul(G, G), G)),
-                           mul(y + 1 ** -3 + 2 * I_g, mul(Gam_r, Gam_r)))
-            I_y3_arg = div(mul(G, y + 1 ** -3 + 2 * I_g),
+                           mul(y + dr_s + 2 * I_g, mul(Gam_r, Gam_r)))
+            I_y3_arg = div(mul(G, y + dr_s + 2 * I_g),
                            mul(X, mul(Gam_t, Gam_t)))
             i_y1 = integrate(A[0], A[-1], I_y1_arg, A[0], dr_s)[-1]
             i_y2 = integrate(A[0], A[-1], I_y2_arg, A[0], dr_s)[-1]
@@ -143,9 +141,8 @@ class GrowTask():
             f_0 = mu / (N * P) * (2 * zeta ** 5 * i_z - i_y2 - i_y3 * zeta ** 2)\
                   + y * zeta ** 3 / N - zeta ** 4 / (np.pi * P)
 
-            y = y - 1 ** -3 / (f_1 - f_0) * (mu / (N * P) * (2 * zeta ** 5 * i_z - i_y2 - i_y3 * zeta ** 2)\
-                  + y * zeta ** 3 / N - zeta ** 4 / (np.pi * P))
-            eps = abs(y_old - y)
+            y = y - dr_s / (f_1 - f_0) * f_0
+            eps = abs(dr_s / (f_1 - f_0) * f_0)
 
         I_y1_arg = div(mul(mul(mul(X, X), X), mul(mul(G, G), G)),
                        mul(mul(y + 0.01 + 2 * I_g, y + 0.01 + 2 * I_g), mul(Gam_r, Gam_r)))
@@ -155,6 +152,7 @@ class GrowTask():
 
         self.R_s = np.sqrt(a + 2 / zeta * I_g)
         self.R_m = findinverse(self.R_s, A[0], dr_s, dr_m)
+        self.zeta = zeta
 
         ###
         self.Index_arr_s = []
@@ -181,4 +179,7 @@ class GrowTask():
 
     def getSpatiallDissplacement(self):
         Diss = [x for x in np.linspace(min(self.R_s), max(self.R_s), len(self.R_m))] - self.R_m
-        return {'Diss': Diss, 'Displacement on old radii ': self.R_m[self.Index_arr_m], 'step': self.dr_m}
+        return {'Diss': Diss, 'Displacement on new radii ': self.R_m[self.Index_arr_m], 'step': self.dr_m}
+
+    def getZeta(self):
+        return self.zeta
