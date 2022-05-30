@@ -174,12 +174,12 @@ class GrowTask():
         return {'R': self.R_m, 'Old radii': self.R_m[self.Index_arr_s], 'step': self.dr_m}
 
     def getMaterialDissplacement(self):
-        Diss = self.R_s - [x for x in np.linspace(self.A[0], self.A[-1], len(self.R_s))]
-        return {'Diss': Diss, 'Displacement on old radii ': self.R_s[self.Index_arr_s], 'step': self.dr_s}
+        Disp = self.R_s - [x for x in np.linspace(self.A[0], self.A[-1], len(self.R_s))]
+        return {'Displacement': Disp, 'Displacement on old radii ': self.R_s[self.Index_arr_s], 'step': self.dr_s}
 
     def getSpatiallDissplacement(self):
-        Diss = [x for x in np.linspace(min(self.R_s), max(self.R_s), len(self.R_m))] - self.R_m
-        return {'Diss': Diss, 'Displacement on new radii ': self.R_m[self.Index_arr_m], 'step': self.dr_m}
+        Disp = [x for x in np.linspace(min(self.R_s), max(self.R_s), len(self.R_m))] - self.R_m
+        return {'Displacement': Disp, 'Displacement on new radii ': self.R_m[self.Index_arr_m], 'step': self.dr_m}
 
     def getZeta(self):
         return self.zeta
