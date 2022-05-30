@@ -150,36 +150,40 @@ class GrowTask():
         zeta = mu / P * (i_t - i_y1)
         a = y / zeta
 
-        self.R_s = np.sqrt(a + 2 / zeta * I_g)
-        self.R_m = findinverse(self.R_s, A[0], dr_m, dr_s)
+        self.R_m = np.sqrt(a + 2 / zeta * I_g)
+        self.R_s = findinverse(self.R_m, A[0], dr_s, dr_m)
         self.zeta = zeta
 
         ###
-        self.Index_arr_s = []
-        self.Index_arr_s.append(0)
-        for i in range(0, len(A) - 1):
-            self.Index_arr_s.append(int(np.floor((A[i+1] - A[0]) / dr_m)))
-
         self.Index_arr_m = []
         self.Index_arr_m.append(0)
         for i in range(0, len(A) - 1):
-            self.Index_arr_m.append(int(np.floor((self.R_s[self.Index_arr_s[i+1]] - self.R_s[0]) / dr_s)))
+            self.Index_arr_m.append(int(np.floor((A[i+1] - A[0]) / dr_m)))
+
+        self.Index_arr_s = []
+        self.Index_arr_s.append(0)
+        for i in range(0, len(A) - 1):
+            self.Index_arr_s.append(int(np.floor((self.R_m[self.Index_arr_m[i+1]] - self.R_m[0]) / dr_s)))
 
         print()
 
-    def getMaterialRadius(self):
+    def getSpatialRadius(self):
         return {'r': self.R_s, 'New radii': self.R_s[self.Index_arr_s], 'step': self.dr_m}
 
-    def getSpatialRadius(self):
-        return {'R': self.R_m, 'Old radii': self.R_m[self.Index_arr_s], 'step': self.dr_s}
+    def getMaterialRadius(self):
+        return {'R': self.R_m, 'Old radii': self.R_m[self.Index_arr_m], 'step': self.dr_s}
+
+    def getSpatialDissplacement(self):
+        Disp = self.R_m - [x for x in np.linspace(self.A[0], self.A[-1], len(self.R_m))]
+        return {'Displacement': Disp,
+                'Displacement on radii ': self.R_m[self.Index_arr_m] - self.R_s[self.Index_arr_s],
+                'step': self.dr_m}
 
     def getMaterialDissplacement(self):
-        Disp = self.R_s - [x for x in np.linspace(self.A[0], self.A[-1], len(self.R_s))]
-        return {'Displacement': Disp, 'Displacement on old radii ': self.R_s[self.Index_arr_s], 'step': self.dr_m}
-
-    def getSpatiallDissplacement(self):
-        Disp = [x for x in np.linspace(min(self.R_s), max(self.R_s), len(self.R_m))] - self.R_m
-        return {'Displacement': Disp, 'Displacement on new radii ': self.R_m[self.Index_arr_m], 'step': self.dr_s}
+        Disp = [x for x in np.linspace(min(self.R_m), max(self.R_m), len(self.R_s))] - self.R_s
+        return {'Displacement': Disp,
+                'Displacement on radii ': self.R_m[self.Index_arr_m] - self.R_s[self.Index_arr_s],
+                'step': self.dr_s}
 
     def getZeta(self):
         return self.zeta
