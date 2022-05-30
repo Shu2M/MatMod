@@ -106,20 +106,14 @@ class GrowTask():
         i_z = integrate(A[0], A[-1], div(mul(G, X),
                                          mul(Gam_z, Gam_z)), A[0], dr_s)[-1]
 
-        I_y1_arg = div(mul(mul(mul(X, X), X), mul(mul(G, G), G)),
-                       mul(mul(y + 2 * I_g, y + 2 * I_g), mul(Gam_r, Gam_r)))
-        i_y1 = integrate(A[0], A[-1], I_y1_arg, A[0], dr_s)[-1]
-        y = y + (1 - mu / P * (i_t - i_y1))
-        y = y + (1 - mu / P * (i_t - i_y1))
-        y = y + (1 - mu / P * (i_t - i_y1))
-
         eps = 1
+        dx = dr_s
         while eps >= 1e-6:
             I_y1_arg = div(mul(mul(mul(X, X), X), mul(mul(G, G), G)),
-                           mul(mul(y + dr_s + 2 * I_g, y + dr_s + 2 * I_g), mul(Gam_r, Gam_r)))
+                           mul(mul(y + dx + 2 * I_g, y + dx + 2 * I_g), mul(Gam_r, Gam_r)))
             I_y2_arg = div(mul(mul(mul(X, X), X), mul(mul(G, G), G)),
-                           mul(y + dr_s + 2 * I_g, mul(Gam_r, Gam_r)))
-            I_y3_arg = div(mul(G, y + dr_s + 2 * I_g),
+                           mul(y + dx + 2 * I_g, mul(Gam_r, Gam_r)))
+            I_y3_arg = div(mul(G, y + dx + 2 * I_g),
                            mul(X, mul(Gam_t, Gam_t)))
             i_y1 = integrate(A[0], A[-1], I_y1_arg, A[0], dr_s)[-1]
             i_y2 = integrate(A[0], A[-1], I_y2_arg, A[0], dr_s)[-1]
@@ -141,8 +135,8 @@ class GrowTask():
             f_0 = mu / (N * P) * (2 * zeta ** 5 * i_z - i_y2 - i_y3 * zeta ** 2)\
                   + y * zeta ** 3 / N - zeta ** 4 / (np.pi * P)
 
-            y = y - dr_s / (f_1 - f_0) * f_0
-            eps = abs(dr_s / (f_1 - f_0) * f_0)
+            y = y - dx / (f_1 - f_0) * f_0
+            eps = abs(dx / (f_1 - f_0) * f_0)
 
         I_y1_arg = div(mul(mul(mul(X, X), X), mul(mul(G, G), G)),
                        mul(mul(y + 0.01 + 2 * I_g, y + 0.01 + 2 * I_g), mul(Gam_r, Gam_r)))
@@ -164,8 +158,6 @@ class GrowTask():
         self.Index_arr_s.append(0)
         for i in range(0, len(A) - 1):
             self.Index_arr_s.append(int(np.floor((self.R_m[self.Index_arr_m[i+1]] - self.R_m[0]) / dr_s)))
-
-        print()
 
     def getSpatialRadius(self):
         return {'r': self.R_s, 'New radii': self.R_s[self.Index_arr_s], 'step': self.dr_m}
