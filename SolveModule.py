@@ -123,5 +123,5 @@ class GrowTask():
     def getZeta(self):
         return self.zeta
 
-    def IsSolved(self):
+    def isSolved(self):
         return self.can_solve
