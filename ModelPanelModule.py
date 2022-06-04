@@ -1,6 +1,7 @@
 from email import message
 import wx
 from wx.lib.pubsub import pub 
+from SolveModule import GrowTask
 
 class ModelPanel(wx.Panel):
     def __init__(self, parent):
@@ -57,18 +58,20 @@ class ModelPanel(wx.Panel):
 
         self.SetSizer(gr)
 
-    def onSolve(self, event):       
-        dataMessage = {'Gamma_r_list': [self.inputWindowGammar1.GetValue()], 
-                       'Gamma_t_list': [self.inputWindowGammat1.GetValue()],
-                       'Gamma_z_list': [self.inputWindowGammaz1.GetValue()],
-                       'A_list': [float(self.inputWindowR1.GetValue()), float(self.inputWindowR2.GetValue())], 
-                       'mu': float(self.inputWindowMu.GetValue()),
-                       'N': float(self.inputWindowN.GetValue()),
-                       'P': float(self.inputWindowP.GetValue())}
-        #logOutputPrint DataToSolve
+    def onSolve(self, event): 
+        pub.sendMessage("logOutputPrint", message='start solving\n')     
+        solution = GrowTask([self.inputWindowGammar1.GetValue()],
+                            [self.inputWindowGammat1.GetValue()],
+                            [self.inputWindowGammaz1.GetValue()],
+                            [float(self.inputWindowR1.GetValue()), float(self.inputWindowR2.GetValue())],
+                            float(self.inputWindowMu.GetValue()),
+                            float(self.inputWindowN.GetValue()),
+                            float(self.inputWindowP.GetValue()))
+        pub.sendMessage("logOutputPrint", message='solving completed succsesful\n')
+
         pub.sendMessage("DeleteCheckBoxes", message=True)
         pub.sendMessage("CheckBoxNumber", message=self.numberRadius.GetValue())
-        pub.sendMessage("logOutputPrint", message='start solving\n')
-        pub.sendMessage("DataToSolve", message=dataMessage)
+
+        pub.sendMessage("DataToPlot", message=solution)
         
 

@@ -8,7 +8,7 @@ from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg
 class LongitudStressGraphsPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
-        pub.subscribe(self.plotResults, "DataToSolve")
+        pub.subscribe(self.plotResults, "DataToPlot")
 
         gr = wx.GridBagSizer(5, 5)
 
@@ -31,10 +31,34 @@ class LongitudStressGraphsPanel(wx.Panel):
         self.Layout()
 
     def plotResults(self, message):
-        solution = GrowTask(message['Gamma_r_list'], 
-                            message['Gamma_t_list'], 
-                            message['Gamma_z_list'], 
-                            message['A_list'], 
-                            message['mu'],
-                            message['N'],
-                            message['P'])
+        solution = message
+        self.axes1.clear()
+        self.axes2.clear()
+
+        spacialLongitudStresses = solution.getSpacialStresses()['Longitudinal stress']
+        materialLongitudStresses = solution.getMaterialStresses()['Longitudinal stress']
+
+        dr_s = solution.getMaterialStresses()['step'] 
+        dr_m = solution.getSpacialStresses()['step'] 
+
+        oldRadii = solution.getSpatialRadius()['Old radii'] 
+        newRadii = solution.getMaterialRadius()['New radii'] 
+
+        R = np.linspace(oldRadii[0], oldRadii[-1], num=len(materialLongitudStresses), endpoint=True)  #np.arange(oldRadii[0], oldRadii[-1]+dr_s/10, dr_s) 
+        r = np.linspace(newRadii[0], newRadii[-1], num=len(spacialLongitudStresses), endpoint=True) #np.arange(newRadii[0], newRadii[-1]+dr_m/10, dr_m) 
+
+        self.axes1.plot(R, materialLongitudStresses, label='material longitud stresses')
+        self.axes1.set_xlabel('R')
+        self.axes1.set_ylabel('LongitudSigma(R)')
+
+        self.axes2.plot(r, spacialLongitudStresses, label='spacial longitud stresses')
+        self.axes2.set_xlabel('r')
+        self.axes2.set_ylabel('LongitudSigma(r)')
+
+        pub.sendMessage("logOutputPrint", message='material and spatial longitud stresses were plotted\n')
+
+        self.axes1.legend()
+        self.axes2.legend()
+
+        self.canvas1.draw()
+        self.canvas2.draw()
