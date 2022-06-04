@@ -1,6 +1,6 @@
 import numpy as np
 def text2list(Text_list, A, dx):
-    X = [x for x in np.arange(A[0], A[-1] + dx / 2, dx)]
+    X = [x for x in np.arange(A[0], A[-1] + dx / 10, dx)]
     Fun_list = np.zeros([len(Text_list), len(X)])
     for i in range(0, len(Text_list)):
         j = 0

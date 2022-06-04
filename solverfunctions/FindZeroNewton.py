@@ -11,8 +11,8 @@ def findzeronewton(fun, a, b, x_0, eps, max_n, dx):
         dir_f = (fun(x_0 + dx) - f) / dx
         x_0 = x_0 - f / dir_f
         n += 1
-        if (n >= max_n) | (x_0 < b - 2 * a) | (x_0 > 2 * b - a):
-            print('Newton method is diverges')
+        if (n >= max_n) | (x_0 < 2 * a - b) | (x_0 > 2 * b - a) | (x_0 < 0):
+            print('Newton method diverges')
             convergence = 0
             return x_0, convergence
 
