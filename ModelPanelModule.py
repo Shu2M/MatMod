@@ -4,86 +4,70 @@ from wx.lib.pubsub import pub
 
 class ModelPanel(wx.Panel):
     def __init__(self, parent):
-        global inputWindowR1, inputWindowR2
-        global inputWindowGammar1, inputWindowGammar2
-        global inputWindowGammat1, inputWindowGammat2
-        global inputWindowGammaz1, inputWindowGammaz2
-        global inputWindowZeta
-
-
         wx.Frame.__init__(self, parent=parent)
 
-        verticalBox = wx.BoxSizer(wx.VERTICAL)
+        gr = wx.GridBagSizer(5, 5)
+        textSize = (60, 20)
 
-        staticTextR = wx.StaticText(self, label='R')
-        inputWindowR1 = wx.TextCtrl(self)
-        inputWindowR2 = wx.TextCtrl(self)
-        horizontalBoxR = wx.BoxSizer(wx.HORIZONTAL)
-        horizontalBoxR.Add(staticTextR, flag=wx.RIGHT, border=8)
-        horizontalBoxR.Add(inputWindowR1)
-        horizontalBoxR.Add(inputWindowR2)
+        self.staticTextR = wx.StaticText(self, label='R')
+        gr.Add(self.staticTextR, pos=(0, 0), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+        self.inputWindowR1 = wx.TextCtrl(self, size=textSize, value='1')
+        gr.Add(self.inputWindowR1, pos=(0, 2), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+        self.inputWindowR2 = wx.TextCtrl(self, size=textSize, value='2')
+        gr.Add(self.inputWindowR2, pos=(0, 3), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
 
-        staticTextGammar = wx.StaticText(self, label='gamma_r')
-        inputWindowGammar1 = wx.TextCtrl(self)
-        inputWindowGammar2 = wx.TextCtrl(self)
-        horizontalBoxGammar = wx.BoxSizer(wx.HORIZONTAL)
-        horizontalBoxGammar.Add(staticTextGammar, flag=wx.RIGHT, border=8)
-        horizontalBoxGammar.Add(inputWindowGammar1)
-        horizontalBoxGammar.Add(inputWindowGammar2)
+        self.staticTextGammar = wx.StaticText(self, label='gamma_r')
+        gr.Add(self.staticTextGammar, pos=(1, 0), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+        self.inputWindowGammar1 = wx.TextCtrl(self, size=textSize, value='1')
+        gr.Add(self.inputWindowGammar1, pos=(1, 2), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+        self.inputWindowGammar2 = wx.TextCtrl(self, size=textSize, value='1.5')
+        gr.Add(self.inputWindowGammar2, pos=(1, 3), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
 
-        staticTextGammat = wx.StaticText(self, label='gamma_t')
-        inputWindowGammat1 = wx.TextCtrl(self)
-        inputWindowGammat2 = wx.TextCtrl(self)
-        horizontalBoxGammat = wx.BoxSizer(wx.HORIZONTAL)
-        horizontalBoxGammat.Add(staticTextGammat, flag=wx.RIGHT, border=8)
-        horizontalBoxGammat.Add(inputWindowGammat1)
-        horizontalBoxGammat.Add(inputWindowGammat2)
+        self.staticTextGammat = wx.StaticText(self, label='gamma_t')
+        gr.Add(self.staticTextGammat, pos=(2, 0), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+        self.inputWindowGammat1 = wx.TextCtrl(self, size=textSize, value='1')
+        gr.Add(self.inputWindowGammat1, pos=(2, 2), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+        self.inputWindowGammat2 = wx.TextCtrl(self, size=textSize, value='1.5')
+        gr.Add(self.inputWindowGammat2, pos=(2, 3), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
 
-        staticTextGammaz = wx.StaticText(self, label='gamma_z')
-        inputWindowGammaz1 = wx.TextCtrl(self)
-        inputWindowGammaz2 = wx.TextCtrl(self)
-        horizontalBoxGammaz = wx.BoxSizer(wx.HORIZONTAL)
-        horizontalBoxGammaz.Add(staticTextGammaz, flag=wx.RIGHT, border=8)
-        horizontalBoxGammaz.Add(inputWindowGammaz1)
-        horizontalBoxGammaz.Add(inputWindowGammaz2)
+        self.staticTextGammaz = wx.StaticText(self, label='gamma_z')
+        gr.Add(self.staticTextGammaz, pos=(3, 0), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+        self.inputWindowGammaz1 = wx.TextCtrl(self, size=textSize, value='1')
+        gr.Add(self.inputWindowGammaz1, pos=(3, 2), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+        self.inputWindowGammaz2 = wx.TextCtrl(self, size=textSize, value='1.5')
+        gr.Add(self.inputWindowGammaz2, pos=(3, 3), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
 
-        staticTextZeta = wx.StaticText(self, label='zeta')
-        inputWindowZeta = wx.TextCtrl(self)
-        horizontalBoxZeta = wx.BoxSizer(wx.HORIZONTAL)
-        horizontalBoxZeta.Add(staticTextZeta, flag=wx.RIGHT, border=8)
-        horizontalBoxZeta.Add(inputWindowZeta)
+        self.staticTextMu = wx.StaticText(self, label='mu')
+        gr.Add(self.staticTextMu, pos=(4, 0), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+        self.inputWindowMu = wx.TextCtrl(self, size=textSize, value='2')
+        gr.Add(self.inputWindowMu, pos=(4, 2), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
 
-        solveButton = wx.Button(self, id=wx.ID_ANY, label="Solve", size=(70,30))
-        horizontalBoxSolveButton = wx.BoxSizer(wx.HORIZONTAL)
-        horizontalBoxSolveButton.Add(solveButton, flag=wx.RIGHT, border=8)
+        self.staticTextN = wx.StaticText(self, label='N')
+        gr.Add(self.staticTextN, pos=(5, 0), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+        self.inputWindowN = wx.TextCtrl(self, size=textSize, value='10')
+        gr.Add(self.inputWindowN, pos=(5, 2), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+
+        self.staticTextP = wx.StaticText(self, label='P')
+        gr.Add(self.staticTextP, pos=(6, 0), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+        self.inputWindowP = wx.TextCtrl(self, size=textSize, value='20')
+        gr.Add(self.inputWindowP, pos=(6, 2), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+
+        self.solveButton = wx.Button(self, id=wx.ID_ANY, label="Solve")
+        gr.Add(self.solveButton, pos=(7, 0), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
         self.Bind(wx.EVT_BUTTON, self.onSolve)
 
-        verticalBox.Add(horizontalBoxR, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
-        verticalBox.Add(horizontalBoxGammar, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
-        verticalBox.Add(horizontalBoxGammat, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
-        verticalBox.Add(horizontalBoxGammaz, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
-        verticalBox.Add(horizontalBoxZeta, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
-        verticalBox.Add(horizontalBoxSolveButton, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
-        self.SetSizer(verticalBox)
-
-        font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        font.SetPointSize(12)
-        self.SetFont(font)
+        self.SetSizer(gr)
 
     def onSolve(self, event):       
-        r1 = inputWindowR1.GetValue()
-        r2 = inputWindowR2.GetValue()
-
-        gammar1 = inputWindowGammar1.GetValue()
-        gammar2 = inputWindowGammar2.GetValue()
-
-        gammat1 = inputWindowGammat1.GetValue()
-        gammat2 = inputWindowGammat2.GetValue()
-
-        gammaz1 = inputWindowGammaz1.GetValue()
-        gammaz2 = inputWindowGammaz2.GetValue()
-
-        zeta = inputWindowZeta.GetValue()
+        dataMessage = {'Gamma_r_list': [self.inputWindowGammar1.GetValue(), self.inputWindowGammar2.GetValue()], 
+                       'Gamma_t_list': [self.inputWindowGammat1.GetValue(), self.inputWindowGammat2.GetValue()],
+                       'Gamma_z_list': [self.inputWindowGammaz1.GetValue(), self.inputWindowGammaz2.GetValue()],
+                       'A_list': [float(self.inputWindowR1.GetValue()), float(self.inputWindowR2.GetValue())], 
+                       'mu': float(self.inputWindowMu.GetValue()),
+                       'N': float(self.inputWindowN.GetValue()),
+                       'P': float(self.inputWindowP.GetValue())}
+        #logOutputPrint DataToSolve
+        pub.sendMessage("logOutputPrint", message='start solving\n')
+        pub.sendMessage("DataToSolve", message=dataMessage)
         
-        message = f"r1 = {r1}\nr2 = {r2}\ngamma_r1 = {gammar1}\n"
-        pub.sendMessage("logOutputPrint", message=message)
+

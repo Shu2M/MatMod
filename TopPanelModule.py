@@ -12,5 +12,5 @@ class TopPanel(wx.Panel):
         notebook.AddPage(ResultsPanel(notebook), "Results")
 
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(notebook, 1, wx.ALL|wx.EXPAND, 5)
+        sizer.Add(notebook, 1, wx.EXPAND | wx.ALL, 5)
         self.SetSizer(sizer)

@@ -8,9 +8,9 @@ class LogPanel(wx.Panel):
         pub.subscribe(self.outputPrint, "logOutputPrint")
 
         # expanding the log on all panel
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.logText, 1, wx.EXPAND | wx.ALL, 5)
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(self.logText, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 5)
         self.SetSizer(sizer)
 
     def outputPrint(self, message):
-        self.logText.AppendText(message)
+        self.logText.AppendText(str(message))

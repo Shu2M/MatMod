@@ -5,7 +5,7 @@ from wx.lib.pubsub import pub
 
 class MainWindow(wx.Frame):
     def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent=parent, title=title)
+        wx.Frame.__init__(self, parent=parent, title=title, size=(600, 600))
 
         self.CreateStatusBar() # a status bar in the bottom of the window
 
