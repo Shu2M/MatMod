@@ -158,10 +158,10 @@ class GrowTask():
 
 
     def getSpatialRadius(self):
-        return {'R': self.R_s, 'Old radii id': self.Old_r_id_list, 'step': self.dr_m}
+        return {'R': self.R_s, 'Old radii': self.R_s[self.Old_r_id_list], 'step': self.dr_m}
 
     def getMaterialRadius(self):
-        return {'r': self.R_m, 'New radii id': self.New_r_id_list, 'step': self.dr_s}
+        return {'r': self.R_m, 'New radii': self.R_m[self.New_r_id_list], 'step': self.dr_s}
 
     def getSpatialDissplacement(self):
         Disp = self.R_m - [x for x in np.linspace(self.A[0], self.A[-1], len(self.R_m))]
