@@ -3,7 +3,6 @@ from numpy import multiply as mul
 from numpy import divide as div
 from solverfunctions.Integrate import integrate
 from solverfunctions.Combine import combine
-import matplotlib.pyplot as plt
 
 def solve4matstress(Material_properties, R_material, y, zeta, step, New_radii_id_list):
     A = Material_properties.get('Spacial radii')
@@ -25,7 +24,7 @@ def solve4matstress(Material_properties, R_material, y, zeta, step, New_radii_id
     Tau_m = mu * (I_t / zeta - I_y_m / zeta ** 3)
 
 
-    Radial_stress_m =  Tau_m - Tau_m[-1]
+    Radial_stress_m =  Tau_m[-1] - Tau_m
     Tang_stress_m = Radial_stress_m + mu * (pow(div(R_m, mul(X, Gam_t)), 2)
                                             - pow(div(mul(X, mul(Gam_t, Gam_z)), zeta * R_m), 2))
     Long_stress_m = Radial_stress_m + mu * (pow(div(zeta, Gam_z), 2)
@@ -59,7 +58,7 @@ def solve4spacstress(Material_properties, R_spatial, y, zeta, step, Old_radii_id
 
     Tau_s = mu * (I_t - I_y_s / zeta ** 2)
 
-    Radial_stress_s = Tau_s - Tau_s[-1]
+    Radial_stress_s = Tau_s[-1] - Tau_s
     Tang_stress_s = Radial_stress_s + mu * (np.square(div(X, mul(R_s, Gam_t)))
                                             - np.square(div(mul(R_s, mul(Gam_t, Gam_z)), X)) / zeta ** 2)
     Long_stress_s = Radial_stress_s + mu * (np.square(div(zeta, Gam_z))
