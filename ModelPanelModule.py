@@ -1,4 +1,5 @@
 from email import message
+from matplotlib.pyplot import flag
 import wx
 from wx.lib.pubsub import pub 
 from SolveModule import GrowTask
@@ -32,7 +33,7 @@ class ModelPanel(wx.Panel):
         self.inputWindowGammaz1 = wx.TextCtrl(self, size=textSize, value='1')
         gr.Add(self.inputWindowGammaz1, pos=(3, 2), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
 
-        self.staticTextMu = wx.StaticText(self, label='mu')
+        self.staticTextMu = wx.StaticText(self, label='Shear modulus')
         gr.Add(self.staticTextMu, pos=(4, 0), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
         self.inputWindowMu = wx.TextCtrl(self, size=textSize, value='70')
         gr.Add(self.inputWindowMu, pos=(4, 2), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
@@ -48,13 +49,21 @@ class ModelPanel(wx.Panel):
         gr.Add(self.inputWindowP, pos=(6, 2), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
 
         self.solveButton = wx.Button(self, id=wx.ID_ANY, label="Solve")
-        gr.Add(self.solveButton, pos=(7, 0), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
-        self.Bind(wx.EVT_BUTTON, self.onSolve)
+        gr.Add(self.solveButton, pos=(7, 0), flag=wx.EXPAND)
+        self.Bind(wx.EVT_BUTTON, self.onSolve, self.solveButton)
 
-        self.staticText = wx.StaticText(self, label='R num')
-        gr.Add(self.staticText, pos=(8, 0), flag=wx.TOP | wx.LEFT | wx.BOTTOM)
+        self.staticText = wx.StaticText(self, label='Number of shells')
+        gr.Add(self.staticText, pos=(8, 0), flag=wx.EXPAND | wx.ALL)
         self.numberRadius = wx.SpinCtrl(self, value='2', min=2, max=10)
         gr.Add(self.numberRadius, pos=(8,2))
+
+        self.setRadiiButton = wx.Button(self, id=wx.ID_ANY, label="Set shell radii")
+        self.Bind(wx.EVT_BUTTON, self.check1, self.setRadiiButton)
+        gr.Add(self.setRadiiButton, pos=(9,0), flag=wx.EXPAND)
+
+        self.setGammaButton = wx.Button(self, id=wx.ID_ANY, label="Set gamma")
+        self.Bind(wx.EVT_BUTTON, self.check2, self.setGammaButton)
+        gr.Add(self.setGammaButton, pos=(10,0), flag=wx.EXPAND)
 
         self.SetSizer(gr)
 
@@ -74,4 +83,9 @@ class ModelPanel(wx.Panel):
 
         pub.sendMessage("DataToPlot", message=solution)
         
+    def check1(self, event):
+        pub.sendMessage("logOutputPrint", message='good 1\n')
+
+    def check2(self, event):
+        pub.sendMessage("logOutputPrint", message='good 2\n')
 

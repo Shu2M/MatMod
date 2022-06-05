@@ -18,7 +18,7 @@ class RadiiGraphsPanel(wx.Panel):
         pub.subscribe(self.deleteCheckBoxes, "DeleteCheckBoxes")
         
         self.gr = wx.GridBagSizer(5, 5)
-        self.widgetSizer = wx.GridBagSizer(5, 5)
+        self.widgetSizer = wx.BoxSizer(wx.VERTICAL)
 
         explanation = "RadiiGraphsPanel"
         text = wx.StaticText(self, label=explanation)
@@ -35,11 +35,12 @@ class RadiiGraphsPanel(wx.Panel):
 
     def deleteCheckBoxes(self, message):
         if self.widgetSizer.GetChildren():
-            while self.checkBoxNumber > 0:
-                self.widgetSizer.Hide(self.checkBoxNumber-1)
-                self.widgetSizer.Remove(self.checkBoxNumber-1)
+            while self.checkBoxNumber >= 0:
+                self.widgetSizer.Hide(self.checkBoxNumber)
+                self.widgetSizer.Remove(self.checkBoxNumber)
                 self.checkBoxNumber -= 1
             self.checkBoxes = []
+            self.checkBoxNumber = 0
             self.frame.Fit()
 
 
@@ -50,10 +51,10 @@ class RadiiGraphsPanel(wx.Panel):
             newCheckBox = wx.CheckBox(self, label=label)
             newCheckBox.SetValue(True)
             self.checkBoxes.append(newCheckBox)
-            self.widgetSizer.Add(newCheckBox, pos=(i, 0))
+            self.widgetSizer.Add(newCheckBox)
         updateButton = wx.Button(self, wx.ID_ANY, "Update")
         self.Bind(wx.EVT_BUTTON, self.updateResults, updateButton)
-        self.widgetSizer.Add(updateButton, pos=(self.checkBoxNumber, 0))
+        self.widgetSizer.Add(updateButton)
         self.frame.Fit()
 
 
