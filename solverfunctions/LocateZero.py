@@ -1,4 +1,5 @@
 import numpy as np
+
 def locatezero(fun, a, b, init_interval, eps):
     r = init_interval
     a_new = a
@@ -6,7 +7,6 @@ def locatezero(fun, a, b, init_interval, eps):
 
     out_of_range = 0
     if fun(a) * fun(b) > 0:
-        print('Zero is out of range')
         out_of_range = 1
         return a_new, b_new, out_of_range
 

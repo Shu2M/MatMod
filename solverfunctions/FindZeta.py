@@ -2,6 +2,7 @@ import numpy as np
 from solverfunctions.Integrate import integrate
 from numpy import multiply as mul
 from numpy import divide as div
+
 def findzeta(Material_properties, Boundary_conditions, Pre_solved_integrals, y, step):
     A = Material_properties.get('Spacial radii')
     G = Material_properties.get('Material growth function')
@@ -25,7 +26,6 @@ def findzeta(Material_properties, Boundary_conditions, Pre_solved_integrals, y, 
 
         if zeta < 0:
             can_solve = 0
-            print('Cannot solve for zeta')
             return zeta, can_solve
     else:
         I_y2_arg = div(mul(mul(mul(X, X), X), mul(mul(G, G), G)),
@@ -44,7 +44,6 @@ def findzeta(Material_properties, Boundary_conditions, Pre_solved_integrals, y, 
         zeta = zeta.real[abs(zeta.imag) < 1e-5]
         if len(zeta[zeta > 0]) != 1:
             can_solve = 0
-            print('Cannot solve for zeta')
             return zeta, can_solve
         zeta = zeta[zeta > 0][0]
 
