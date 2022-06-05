@@ -22,6 +22,10 @@ class GrowTask():
         self.dr_s = dr_s
         self.dr_m = dr_m
 
+        Gamma_r_fl = [float(g) for g in Gamma_r_text]
+        Gamma_t_fl = [float(g) for g in Gamma_t_text]
+        Gamma_z_fl = [float(g) for g in Gamma_z_text]
+
         self.can_solve = 1
         out_of_bounds = 0
         if min(np.array(A)) <= 0:
@@ -34,12 +38,12 @@ class GrowTask():
             print('Maximum radius is too big')
             self.can_solve = 0
 
-        if min([min(Gamma_r_text), min(Gamma_t_text), min(Gamma_z_text)]) <= 0:
+        if min([min(Gamma_r_fl), min(Gamma_t_fl), min(Gamma_z_fl)]) <= 0:
             pub.sendMessage("logOutputPrint", message='Gamma coefficients must be positive\n')
             print('Gamma coefficients must be positive')
             self.can_solve = 0
 
-        if max([max(Gamma_r_text), max(Gamma_t_text), max(Gamma_z_text)]) > 10:
+        if max([max(Gamma_r_fl), max(Gamma_t_fl), max(Gamma_z_fl)]) > 10:
             pub.sendMessage("logOutputPrint", message='Maximum gamma coefficient is too big\n')
             print('Maximum gamma coefficient is too big')
             self.can_solve = 0
@@ -92,7 +96,6 @@ class GrowTask():
 
             fun = lambda y: bcfunction(Material_properties, Boundary_conditions, Pre_solved_integrals, y, dr_s)
 
-            self.can_solve = 1
             y_lower, y_upper, out_of_bounds = locatezero(fun, dr_s, 10000, 10, 1)
             if out_of_bounds == 0:
 
