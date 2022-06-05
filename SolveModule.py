@@ -216,7 +216,7 @@ class GrowTask():
                 'Argument': [x for x in np.arange(self.A[0], self.A[-1] + self.dr_s / 10, self.dr_s)],
                 'step': self.dr_s}
 
-    def getAxialStrech(self):
+    def getAxialStretch(self):
         return self.zeta
 
     def IsSolved(self):
