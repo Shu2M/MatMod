@@ -3,6 +3,7 @@ from numpy import multiply as mul
 from numpy import divide as div
 from solverfunctions.Integrate import integrate
 from solverfunctions.Combine import combine
+import matplotlib.pyplot as plt
 
 def solve4matstress(Material_properties, R_material, y, zeta, step, New_radii_id_list):
     A = Material_properties.get('Spacial radii')
