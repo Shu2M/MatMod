@@ -5,7 +5,7 @@ from wx.lib.pubsub import pub
 
 class MainWindow(wx.Frame):
     def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent=parent, title=title, size=(600, 600))
+        wx.Frame.__init__(self, parent=parent, title=title, size=(900, 700))
 
         self.CreateStatusBar() # a status bar in the bottom of the window
 
@@ -25,13 +25,14 @@ class MainWindow(wx.Frame):
         splitter = wx.SplitterWindow(self)
         topPanel = TopPanel(splitter)
         logPanel = LogPanel(splitter)
+        #logPanel.SetMaximumSize(100)
         splitter.SplitHorizontally(topPanel, logPanel)
-        splitter.SetMinimumPaneSize(100)
+        splitter.SetMinimumPaneSize(550)
         
         self.Show(True)
 
     def onAbout(self, event):
-        message = 'Text about this programm\n'
+        message = '>> Text about this programm\n'
         pub.sendMessage("logOutputPrint", message=message)
 
     def onExit(self, event):

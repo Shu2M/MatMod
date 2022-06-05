@@ -12,6 +12,7 @@ class RadiiGraphsPanel(wx.Panel):
         self.graphsR = []
         self.graphsr = []
         self.checkBoxes = []
+        self.flag = False
 
         pub.subscribe(self.plotResults, "DataToPlot")
         pub.subscribe(self.makeCheckBoxes, "CheckBoxNumber")
@@ -20,14 +21,10 @@ class RadiiGraphsPanel(wx.Panel):
         self.gr = wx.GridBagSizer(5, 5)
         self.widgetSizer = wx.BoxSizer(wx.VERTICAL)
 
-        explanation = "RadiiGraphsPanel"
-        text = wx.StaticText(self, label=explanation)
-
-        self.figure = matplotlib.figure.Figure()
+        self.figure = matplotlib.figure.Figure(figsize=(4, 4))
         self.axes = self.figure.add_subplot(1, 1, 1)
         self.canvas = FigureCanvasWxAgg(self, -1, self.figure)
 
-        self.gr.Add(text, pos=(0,0), span=(1,2), flag= wx.EXPAND | wx.LEFT | wx.RIGHT)
         self.gr.Add(self.canvas, pos=(1,0))
         self.gr.Add(self.widgetSizer, pos=(1,1))
         self.SetSizer(self.gr)
@@ -73,7 +70,7 @@ class RadiiGraphsPanel(wx.Panel):
             j += 1
 
         self.updateResults(None)
-        pub.sendMessage("logOutputPrint", message='radiuses plotted\n')
+        pub.sendMessage("logOutputPrint", message='>> Radiuses plotted\n')
 
 
     def updateResults(self, event):
@@ -96,4 +93,6 @@ class RadiiGraphsPanel(wx.Panel):
 
         self.axes.legend()
         self.canvas.draw()
-        pub.sendMessage("logOutputPrint", message='results on the radii panel was updated\n')
+        if self.flag:
+            pub.sendMessage("logOutputPrint", message='>> Results on the radii panel were updated\n')
+        self.flag = True

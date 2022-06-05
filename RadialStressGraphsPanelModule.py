@@ -11,21 +11,19 @@ class RadialStressGraphsPanel(wx.Panel):
         pub.subscribe(self.plotResults, "DataToPlot")
 
         gr = wx.GridBagSizer(5, 5)
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
 
-        explanation = "RadialStressGraphsPanel"
-        text = wx.StaticText(self, label=explanation)
-
-        self.figure1 = matplotlib.figure.Figure()
+        self.figure1 = matplotlib.figure.Figure(figsize=(4, 4))
         self.axes1 = self.figure1.add_subplot(1, 1, 1)
         self.canvas1 = FigureCanvasWxAgg(self, -1, self.figure1)
 
-        self.figure2 = matplotlib.figure.Figure()
+        self.figure2 = matplotlib.figure.Figure(figsize=(4, 4))
         self.axes2 = self.figure2.add_subplot(1, 1, 1)
         self.canvas2 = FigureCanvasWxAgg(self, -1, self.figure2)
 
-        gr.Add(text, pos=(0,0), span=(1,2), flag= wx.EXPAND | wx.LEFT | wx.RIGHT)
-        gr.Add(self.canvas1, pos=(1,0))
-        gr.Add(self.canvas2, pos=(1,1))
+        hbox.Add(self.canvas1, flag=wx.EXPAND|wx.ALL, border=5)
+        hbox.Add(self.canvas2, flag=wx.EXPAND|wx.ALL, border=5)
+        gr.Add(hbox, pos=(1,0), flag=wx.EXPAND | wx.LEFT | wx.RIGHT)
 
         self.SetSizer(gr)
         self.Layout()
@@ -47,15 +45,13 @@ class RadialStressGraphsPanel(wx.Panel):
         R = np.linspace(oldRadii[0], oldRadii[-1], num=len(materialRadialStresses), endpoint=True)  #np.arange(oldRadii[0], oldRadii[-1]+dr_s/10, dr_s) 
         r = np.linspace(newRadii[0], newRadii[-1], num=len(spacialRadialStresses), endpoint=True) #np.arange(newRadii[0], newRadii[-1]+dr_m/10, dr_m) 
 
-        self.axes1.plot(R, materialRadialStresses, label='material radial stresses')
+        self.axes1.plot(R, materialRadialStresses, label='RadialSigma(R)')
         self.axes1.set_xlabel('R')
-        self.axes1.set_ylabel('RadialSigma(R)')
 
-        self.axes2.plot(r, spacialRadialStresses, label='spacial radial stresses')
+        self.axes2.plot(r, spacialRadialStresses, label='RadialSigma(r)')
         self.axes2.set_xlabel('r')
-        self.axes2.set_ylabel('RadialSigma(r)')
 
-        pub.sendMessage("logOutputPrint", message='material and spatial radial stresses were plotted\n')
+        pub.sendMessage("logOutputPrint", message='>> Radial stresses were plotted\n')
 
         self.axes1.legend()
         self.axes2.legend()

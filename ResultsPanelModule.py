@@ -3,6 +3,7 @@ from RadiiGraphsPanelModule import RadiiGraphsPanel
 from RadialStressGraphsPanelModule import RadialStressGraphsPanel
 from TangentialStressGrahpsPanelModule import TangentialStressGrahpsPanel
 from LongitudStressGraphsPanelModule import LongitudStressGraphsPanel
+from DeteiledInformationPanelModule import DeteiledInformationPanel
 
 
 class ResultsPanel(wx.Panel):
@@ -15,6 +16,7 @@ class ResultsPanel(wx.Panel):
         notebook.AddPage(RadialStressGraphsPanel(notebook), "Radial stresses")
         notebook.AddPage(TangentialStressGrahpsPanel(notebook), "Tangential stresses")
         notebook.AddPage(LongitudStressGraphsPanel(notebook), "Longitudinal stresses")
+        #notebook.AddPage(DeteiledInformationPanel(notebook), "Deteiled information")
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(notebook, 1, wx.EXPAND | wx.ALL, 5)

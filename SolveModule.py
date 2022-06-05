@@ -29,32 +29,32 @@ class GrowTask():
         self.can_solve = 1
         out_of_bounds = 0
         if min(np.array(A)) <= 0:
-            pub.sendMessage("logOutputPrint", message='Radii must be positive\n')
+            pub.sendMessage("logOutputPrint", message='>> Radii must be positive\n')
             print('Radii must be positive')
             self.can_solve = 0
 
         if max(np.array(A)) > 100:
-            pub.sendMessage("logOutputPrint", message='Maximum radius is too big\n')
+            pub.sendMessage("logOutputPrint", message='>> Maximum radius is too big\n')
             print('Maximum radius is too big')
             self.can_solve = 0
 
         if min([min(Gamma_r_fl), min(Gamma_t_fl), min(Gamma_z_fl)]) <= 0:
-            pub.sendMessage("logOutputPrint", message='Gamma coefficients must be positive\n')
+            pub.sendMessage("logOutputPrint", message='>> Gamma coefficients must be positive\n')
             print('Gamma coefficients must be positive')
             self.can_solve = 0
 
         if max([max(Gamma_r_fl), max(Gamma_t_fl), max(Gamma_z_fl)]) > 10:
-            pub.sendMessage("logOutputPrint", message='Maximum gamma coefficient is too big\n')
+            pub.sendMessage("logOutputPrint", message='>> Maximum gamma coefficient is too big\n')
             print('Maximum gamma coefficient is too big')
             self.can_solve = 0
 
         if mu <= 0:
-            pub.sendMessage("logOutputPrint", message='Mu must be positive\n')
+            pub.sendMessage("logOutputPrint", message='>> Mu must be positive\n')
             print('Mu must be positive')
             self.can_solve = 0
 
         if min(np.array(A[1:]) - np.array(A[0:-1])) / dr_s < 10:
-            pub.sendMessage("logOutputPrint", message='Radii are too close to each other\n')
+            pub.sendMessage("logOutputPrint", message='>> Radii are too close to each other\n')
             print('Radii are too close to each other')
             self.can_solve = 0
 
@@ -102,7 +102,7 @@ class GrowTask():
                 y, convergence = findzeronewton(fun, y_lower, y_upper, (y_upper + y_lower) / 2,
                                                 max([10 ** -6, dr_s ** 2]), 100, dr_s)
                 if convergence == 0:
-                    pub.sendMessage("logOutputPrint", message='Newton method diverges\n')
+                    pub.sendMessage("logOutputPrint", message='>> Newton method diverges\n')
                     print('Newton method diverges')
                     y_1, y_2, convergence = locatezero(fun, y_lower, y_upper, y_upper - y_lower,
                                                        max([10 ** -6, dr_s ** 2]))
@@ -157,21 +157,21 @@ class GrowTask():
                     self.zeta = zeta
 
                 else:
-                    pub.sendMessage("logOutputPrint", message='Cannot solve for axial stretch\n')
+                    pub.sendMessage("logOutputPrint", message='>> Cannot solve for axial stretch\n')
                     print('Cannot solve for axial stretch')
                     self.can_solve = 0
             else:
-                pub.sendMessage("logOutputPrint", message='Solution is out of bounds\n')
+                pub.sendMessage("logOutputPrint", message='>> Solution is out of bounds\n')
                 print('Solution is out of bounds')
                 self.can_solve = 0
 
 
 
         if self.can_solve == 0:
-            pub.sendMessage("logOutputPrint", message='Cannot solve with such input\n')
+            pub.sendMessage("logOutputPrint", message='>> Cannot solve with such input\n')
             print('Cannot solve with such input')
             if out_of_bounds == 1:
-                pub.sendMessage("logOutputPrint", message='Try lower pressure or larger mu coefficient\n')
+                pub.sendMessage("logOutputPrint", message='>> Try lower pressure or larger mu coefficient\n')
 
             self.R_m = [0]
             self.R_s = [0]
